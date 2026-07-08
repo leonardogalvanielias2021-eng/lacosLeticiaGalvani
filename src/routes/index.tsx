@@ -53,45 +53,57 @@ function HomePage() {
   return (
     <div>
       {/* HERO */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src="/hero-bg.png"
-            alt="Gestante usando vestido rosa em um ensaio fotográfico no campo"
-            width={1600}
-            height={1200}
-            className="w-full h-full object-cover"
+      <section className="relative min-h-[90vh] md:min-h-screen flex flex-col md:flex-row bg-background overflow-hidden">
+        
+        {/* Left Content (45%) */}
+        <div className="w-full md:w-[45%] flex flex-col justify-center items-center md:items-start pt-32 pb-12 md:py-20 px-6 md:pl-[8%] lg:pl-[12%] md:pr-8 relative z-20">
+          
+          {/* Logo */}
+          <img 
+            src="/logo-hero.png" 
+            alt="Logo Laços Letícia Galvani" 
+            className="w-[280px] sm:w-[350px] md:w-[420px] lg:w-[480px] h-auto object-contain mb-8"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/30 to-transparent" />
-        </div>
-        <div className="container-page relative z-10 py-24">
-          <div className="max-w-xl animate-fade-up">
-            <span className="text-[10px] uppercase tracking-[0.35em] text-gold font-medium">
-              Nova Coleção · Encanto
-            </span>
-            <h1 className="font-display italic text-5xl md:text-7xl leading-[1.05] mt-6 text-foreground">
-              Delicadeza em cada detalhe.
-            </h1>
-            <p className="mt-6 text-base text-foreground/70 max-w-md leading-relaxed">
-              Acessórios artesanais criados com amor para eternizar os momentos mais doces
-              da infância.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link
-                to="/produtos"
-                className="inline-flex items-center gap-2 bg-rose-deep hover:bg-gold hover:text-white text-foreground px-8 py-4 rounded-full text-[11px] uppercase tracking-[0.2em] font-medium shadow-elegant transition-all"
-              >
-                Ver coleção <ChevronRight className="size-3.5" />
-              </Link>
-              <Link
-                to="/sobre"
-                className="inline-flex items-center bg-white/80 backdrop-blur border border-border hover:border-gold px-8 py-4 rounded-full text-[11px] uppercase tracking-[0.2em] font-medium transition-all"
-              >
-                Nossa história
-              </Link>
-            </div>
+          
+          {/* Phrase & Subtitle */}
+          <h2 className="font-display italic text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight tracking-wide mb-3">
+            De mãe para mãe
+          </h2>
+          <p className="text-sm md:text-base text-foreground/80 leading-relaxed font-light mb-8 max-w-[320px] md:max-w-sm text-center md:text-left">
+            Laços delicados, feitos com carinho para momentos especiais.
+          </p>
+          
+          {/* Buttons */}
+          <div className="flex flex-wrap justify-center md:justify-start gap-3 w-full">
+            <Link
+              to="/produtos"
+              className="inline-flex items-center gap-2 bg-rose-deep hover:bg-gold hover:text-white text-foreground px-8 py-3.5 rounded-full text-[11px] uppercase tracking-[0.2em] font-medium shadow-elegant transition-all"
+            >
+              Ver coleção <ChevronRight className="size-3.5" />
+            </Link>
+            <Link
+              to="/sobre"
+              className="inline-flex items-center bg-white/80 backdrop-blur border border-border hover:border-gold px-8 py-3.5 rounded-full text-[11px] uppercase tracking-[0.2em] font-medium transition-all"
+            >
+              Nossa história
+            </Link>
           </div>
+          
         </div>
+
+        {/* Right Image (55%) */}
+        <div className="w-full md:w-[55%] h-[50vh] md:h-auto relative z-10">
+          {/* Edge Gradients for smooth blending */}
+          <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:hidden z-10" />
+          <div className="hidden md:block absolute inset-y-0 left-0 w-32 lg:w-48 bg-gradient-to-r from-background via-background/70 to-transparent z-10" />
+          
+          <img 
+            src="/hero-bg.png" 
+            alt="Ensaio fotográfico de mãe e bebê"
+            className="w-full h-full object-cover object-[center_right]"
+          />
+        </div>
+        
       </section>
 
       {/* DIFFERENTIALS */}
