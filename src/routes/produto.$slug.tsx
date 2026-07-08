@@ -72,7 +72,7 @@ function ProductPage() {
           </div>
           {product.gallery.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
-              {product.gallery.map((src, i) => (
+              {product.gallery.map((src: string, i: number) => (
                 <button
                   key={i}
                   onClick={() => setSelectedImage(i)}
@@ -134,7 +134,7 @@ function ProductPage() {
               Cor: <span className="text-foreground/60 font-normal">{color}</span>
             </h4>
             <div className="flex gap-3">
-              {product.colors.map((c) => (
+              {product.colors.map((c: { name: string; hex: string }) => (
                 <button
                   key={c.name}
                   onClick={() => setColor(c.name)}
