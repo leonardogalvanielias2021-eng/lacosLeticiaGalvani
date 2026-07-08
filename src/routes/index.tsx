@@ -62,7 +62,7 @@ function HomePage() {
           <img 
             src="/logo-hero.png" 
             alt="Logo Laços Letícia Galvani" 
-            className="w-[280px] sm:w-[350px] md:w-[420px] lg:w-[480px] h-auto object-contain mb-8"
+            className="w-full max-w-[400px] md:max-w-[550px] lg:max-w-[750px] h-auto object-contain mb-8 md:-ml-4 lg:-ml-8"
           />
           
           {/* Phrase & Subtitle */}
