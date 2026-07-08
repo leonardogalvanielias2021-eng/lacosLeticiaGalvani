@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Heart, Truck, MessageSquareHeart, Star, ChevronRight } from "lucide-react";
 import { PRODUCTS, CATEGORIES } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
-import heroImg from "@/assets/hero-girl-bow.jpg";
 import atelierImg from "@/assets/about-atelier.jpg";
 import g1 from "@/assets/gallery-1.jpg";
 import g2 from "@/assets/gallery-2.jpg";
@@ -57,8 +56,8 @@ function HomePage() {
       <section className="relative min-h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={heroImg}
-            alt="Menina usando laço rosa delicado"
+            src="/hero-bg.png"
+            alt="Gestante usando vestido rosa em um ensaio fotográfico no campo"
             width={1600}
             height={1200}
             className="w-full h-full object-cover"
