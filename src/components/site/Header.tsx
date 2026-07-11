@@ -34,11 +34,11 @@ export function Header() {
           </Link>
         </nav>
 
-        <Link to="/" className="text-center flex flex-col items-center leading-none">
-          <span className="font-display text-2xl md:text-3xl italic tracking-tight">
+        <Link to="/" className="text-center flex flex-col items-center leading-none group">
+          <span className="font-display text-2xl md:text-3xl italic font-semibold tracking-tight text-foreground drop-shadow-sm">
             Letícia Galvani
           </span>
-          <span className="text-[9px] uppercase tracking-[0.35em] text-gold mt-1">
+          <span className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] text-gold mt-1.5 font-medium">
             Ateliê de Laços
           </span>
         </Link>
