@@ -18,6 +18,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 
 export const Route = createFileRoute("/_public/")({
   loader: async () => {
@@ -70,6 +72,10 @@ const testimonials = [
 function HomePage() {
   const { products, categories, settings, banners } = Route.useLoaderData();
   const featured = products.slice(0, 4);
+
+  const autoplayPlugin = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  );
 
   const aboutText = settings?.about_text || "A Laços Letícia Galvani nasceu do desejo de transformar fitas e tecidos em memórias afetivas. Cada peça é confeccionada manualmente em nosso ateliê, utilizando apenas os melhores materiais para garantir conforto e beleza para quem você mais ama.\n\nSão mais de 5.000 pedidos entregues, cada um com o mesmo carinho da primeira peça.";
   const aboutImage = settings?.about_image_url || atelierImg;
@@ -311,10 +317,13 @@ function HomePage() {
             </h2>
           </div>
           <Carousel
+            plugins={[autoplayPlugin.current]}
             opts={{
               align: "start",
               loop: true,
             }}
+            onMouseEnter={autoplayPlugin.current.stop}
+            onMouseLeave={autoplayPlugin.current.reset}
             className="w-full relative"
           >
             <CarouselContent className="-ml-3">
