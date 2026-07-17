@@ -4,7 +4,7 @@ import { ProductsService } from "@/services/products.service";
 import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Loader2, Plus, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Plus, Pencil, Trash2, ImageIcon } from "lucide-react";
 import { Database } from "@/types/database.types";
 
 type Product = Database["public"]["Tables"]["produtos"]["Row"] & {
@@ -79,9 +79,18 @@ function AdminProdutosIndex() {
               products?.map((product) => (
                 <TableRow key={product.id} className="hover:bg-sand/10 transition-colors">
                   <TableCell className="font-medium">
-                    <div className="flex flex-col">
-                      <span>{product.name}</span>
-                      <span className="text-xs text-muted-foreground">{product.slug}</span>
+                    <div className="flex items-center gap-3">
+                      {product.image ? (
+                        <img src={product.image} alt={product.name} className="size-10 rounded-md object-cover bg-sand/50" />
+                      ) : (
+                        <div className="size-10 rounded-md bg-sand/50 border border-border flex items-center justify-center text-muted-foreground">
+                          <ImageIcon className="size-4" />
+                        </div>
+                      )}
+                      <div className="flex flex-col">
+                        <span>{product.name}</span>
+                        <span className="text-[10px] text-muted-foreground font-normal">{product.slug}</span>
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-muted-foreground">
