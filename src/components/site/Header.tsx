@@ -2,15 +2,22 @@ import { Link } from "@tanstack/react-router";
 import { Search, ShoppingBag, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/lib/cart-store";
+import { useQuery } from "@tanstack/react-query";
+import { SettingsService } from "@/services/settings.service";
 
 export function Header() {
   const { totalItems } = useCart();
   const [open, setOpen] = useState(false);
+  
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => SettingsService.getSettings(),
+  });
 
   return (
     <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-rose-soft">
       <div className="bg-rose-soft/60 py-2 text-center text-[10px] tracking-[0.2em] uppercase text-foreground/70">
-        Frete grátis em compras acima de R$ 250 · Envio para todo o Brasil
+        {settings?.top_banner_text || "Frete grátis em compras acima de R$ 250 · Envio para todo o Brasil"}
       </div>
 
       <div className="container-page h-20 flex items-center justify-between gap-4">

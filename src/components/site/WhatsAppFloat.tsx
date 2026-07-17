@@ -1,11 +1,17 @@
+import { useQuery } from "@tanstack/react-query";
+import { SettingsService } from "@/services/settings.service";
 import { MessageCircle } from "lucide-react";
-import { useWhatsAppLink } from "@/lib/cart-store";
 
 export function WhatsAppFloat() {
-  const buildLink = useWhatsAppLink();
-  const href = buildLink(
-    "Olá! Vim pelo site da Laços Letícia Galvani e gostaria de tirar uma dúvida 💗",
-  );
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => SettingsService.getSettings(),
+  });
+
+  const phone = settings?.whatsapp_number || "5511999990000";
+  const message = encodeURIComponent("Olá! Vim pelo site da Laços Letícia Galvani e gostaria de tirar uma dúvida 💗");
+  const href = `https://wa.me/${phone}?text=${message}`;
+
   return (
     <a
       href={href}

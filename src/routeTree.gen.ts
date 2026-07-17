@@ -9,148 +9,386 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SobreRouteImport } from './routes/sobre'
-import { Route as ProdutosRouteImport } from './routes/produtos'
-import { Route as ContatoRouteImport } from './routes/contato'
-import { Route as CarrinhoRouteImport } from './routes/carrinho'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProdutoSlugRouteImport } from './routes/produto.$slug'
+import { Route as PublicRouteImport } from './routes/_public'
+import { Route as PublicIndexRouteImport } from './routes/_public.index'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminAuthenticatedRouteImport } from './routes/admin._authenticated'
+import { Route as PublicSobreRouteImport } from './routes/_public.sobre'
+import { Route as PublicProdutosRouteImport } from './routes/_public.produtos'
+import { Route as PublicContatoRouteImport } from './routes/_public.contato'
+import { Route as PublicCarrinhoRouteImport } from './routes/_public.carrinho'
+import { Route as AdminAuthenticatedIndexRouteImport } from './routes/admin._authenticated.index'
+import { Route as AdminAuthenticatedConfiguracoesRouteImport } from './routes/admin._authenticated.configuracoes'
+import { Route as AdminAuthenticatedCategoriasRouteImport } from './routes/admin._authenticated.categorias'
+import { Route as AdminAuthenticatedBannersRouteImport } from './routes/admin._authenticated.banners'
+import { Route as PublicProdutoSlugRouteImport } from './routes/_public.produto.$slug'
+import { Route as AdminAuthenticatedProdutosIndexRouteImport } from './routes/admin._authenticated.produtos.index'
+import { Route as AdminAuthenticatedProdutosNovoRouteImport } from './routes/admin._authenticated.produtos.novo'
+import { Route as AdminAuthenticatedProdutosIdRouteImport } from './routes/admin._authenticated.produtos.$id'
 
-const SobreRoute = SobreRouteImport.update({
-  id: '/sobre',
-  path: '/sobre',
+const PublicRoute = PublicRouteImport.update({
+  id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProdutosRoute = ProdutosRouteImport.update({
-  id: '/produtos',
-  path: '/produtos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContatoRoute = ContatoRouteImport.update({
-  id: '/contato',
-  path: '/contato',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CarrinhoRoute = CarrinhoRouteImport.update({
-  id: '/carrinho',
-  path: '/carrinho',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
+const PublicIndexRoute = PublicIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => PublicRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProdutoSlugRoute = ProdutoSlugRouteImport.update({
+const AdminAuthenticatedRoute = AdminAuthenticatedRouteImport.update({
+  id: '/admin/_authenticated',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicSobreRoute = PublicSobreRouteImport.update({
+  id: '/sobre',
+  path: '/sobre',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicProdutosRoute = PublicProdutosRouteImport.update({
+  id: '/produtos',
+  path: '/produtos',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicContatoRoute = PublicContatoRouteImport.update({
+  id: '/contato',
+  path: '/contato',
+  getParentRoute: () => PublicRoute,
+} as any)
+const PublicCarrinhoRoute = PublicCarrinhoRouteImport.update({
+  id: '/carrinho',
+  path: '/carrinho',
+  getParentRoute: () => PublicRoute,
+} as any)
+const AdminAuthenticatedIndexRoute = AdminAuthenticatedIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminAuthenticatedRoute,
+} as any)
+const AdminAuthenticatedConfiguracoesRoute =
+  AdminAuthenticatedConfiguracoesRouteImport.update({
+    id: '/configuracoes',
+    path: '/configuracoes',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
+const AdminAuthenticatedCategoriasRoute =
+  AdminAuthenticatedCategoriasRouteImport.update({
+    id: '/categorias',
+    path: '/categorias',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
+const AdminAuthenticatedBannersRoute =
+  AdminAuthenticatedBannersRouteImport.update({
+    id: '/banners',
+    path: '/banners',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
+const PublicProdutoSlugRoute = PublicProdutoSlugRouteImport.update({
   id: '/produto/$slug',
   path: '/produto/$slug',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => PublicRoute,
 } as any)
+const AdminAuthenticatedProdutosIndexRoute =
+  AdminAuthenticatedProdutosIndexRouteImport.update({
+    id: '/produtos/',
+    path: '/produtos/',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
+const AdminAuthenticatedProdutosNovoRoute =
+  AdminAuthenticatedProdutosNovoRouteImport.update({
+    id: '/produtos/novo',
+    path: '/produtos/novo',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
+const AdminAuthenticatedProdutosIdRoute =
+  AdminAuthenticatedProdutosIdRouteImport.update({
+    id: '/produtos/$id',
+    path: '/produtos/$id',
+    getParentRoute: () => AdminAuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/carrinho': typeof CarrinhoRoute
-  '/contato': typeof ContatoRoute
-  '/produtos': typeof ProdutosRoute
-  '/sobre': typeof SobreRoute
-  '/produto/$slug': typeof ProdutoSlugRoute
+  '/': typeof PublicIndexRoute
+  '/carrinho': typeof PublicCarrinhoRoute
+  '/contato': typeof PublicContatoRoute
+  '/produtos': typeof PublicProdutosRoute
+  '/sobre': typeof PublicSobreRoute
+  '/admin': typeof AdminAuthenticatedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/produto/$slug': typeof PublicProdutoSlugRoute
+  '/admin/banners': typeof AdminAuthenticatedBannersRoute
+  '/admin/categorias': typeof AdminAuthenticatedCategoriasRoute
+  '/admin/configuracoes': typeof AdminAuthenticatedConfiguracoesRoute
+  '/admin/': typeof AdminAuthenticatedIndexRoute
+  '/admin/produtos/$id': typeof AdminAuthenticatedProdutosIdRoute
+  '/admin/produtos/novo': typeof AdminAuthenticatedProdutosNovoRoute
+  '/admin/produtos/': typeof AdminAuthenticatedProdutosIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/carrinho': typeof CarrinhoRoute
-  '/contato': typeof ContatoRoute
-  '/produtos': typeof ProdutosRoute
-  '/sobre': typeof SobreRoute
-  '/produto/$slug': typeof ProdutoSlugRoute
+  '/carrinho': typeof PublicCarrinhoRoute
+  '/contato': typeof PublicContatoRoute
+  '/produtos': typeof PublicProdutosRoute
+  '/sobre': typeof PublicSobreRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/': typeof PublicIndexRoute
+  '/produto/$slug': typeof PublicProdutoSlugRoute
+  '/admin/banners': typeof AdminAuthenticatedBannersRoute
+  '/admin/categorias': typeof AdminAuthenticatedCategoriasRoute
+  '/admin/configuracoes': typeof AdminAuthenticatedConfiguracoesRoute
+  '/admin': typeof AdminAuthenticatedIndexRoute
+  '/admin/produtos/$id': typeof AdminAuthenticatedProdutosIdRoute
+  '/admin/produtos/novo': typeof AdminAuthenticatedProdutosNovoRoute
+  '/admin/produtos': typeof AdminAuthenticatedProdutosIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/carrinho': typeof CarrinhoRoute
-  '/contato': typeof ContatoRoute
-  '/produtos': typeof ProdutosRoute
-  '/sobre': typeof SobreRoute
-  '/produto/$slug': typeof ProdutoSlugRoute
+  '/_public': typeof PublicRouteWithChildren
+  '/_public/carrinho': typeof PublicCarrinhoRoute
+  '/_public/contato': typeof PublicContatoRoute
+  '/_public/produtos': typeof PublicProdutosRoute
+  '/_public/sobre': typeof PublicSobreRoute
+  '/admin/_authenticated': typeof AdminAuthenticatedRouteWithChildren
+  '/admin/login': typeof AdminLoginRoute
+  '/_public/': typeof PublicIndexRoute
+  '/_public/produto/$slug': typeof PublicProdutoSlugRoute
+  '/admin/_authenticated/banners': typeof AdminAuthenticatedBannersRoute
+  '/admin/_authenticated/categorias': typeof AdminAuthenticatedCategoriasRoute
+  '/admin/_authenticated/configuracoes': typeof AdminAuthenticatedConfiguracoesRoute
+  '/admin/_authenticated/': typeof AdminAuthenticatedIndexRoute
+  '/admin/_authenticated/produtos/$id': typeof AdminAuthenticatedProdutosIdRoute
+  '/admin/_authenticated/produtos/novo': typeof AdminAuthenticatedProdutosNovoRoute
+  '/admin/_authenticated/produtos/': typeof AdminAuthenticatedProdutosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/carrinho' | '/contato' | '/produtos' | '/sobre' | '/produto/$slug'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/carrinho' | '/contato' | '/produtos' | '/sobre' | '/produto/$slug'
-  id:
-    | '__root__'
     | '/'
     | '/carrinho'
     | '/contato'
     | '/produtos'
     | '/sobre'
+    | '/admin'
+    | '/admin/login'
     | '/produto/$slug'
+    | '/admin/banners'
+    | '/admin/categorias'
+    | '/admin/configuracoes'
+    | '/admin/'
+    | '/admin/produtos/$id'
+    | '/admin/produtos/novo'
+    | '/admin/produtos/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/carrinho'
+    | '/contato'
+    | '/produtos'
+    | '/sobre'
+    | '/admin/login'
+    | '/'
+    | '/produto/$slug'
+    | '/admin/banners'
+    | '/admin/categorias'
+    | '/admin/configuracoes'
+    | '/admin'
+    | '/admin/produtos/$id'
+    | '/admin/produtos/novo'
+    | '/admin/produtos'
+  id:
+    | '__root__'
+    | '/_public'
+    | '/_public/carrinho'
+    | '/_public/contato'
+    | '/_public/produtos'
+    | '/_public/sobre'
+    | '/admin/_authenticated'
+    | '/admin/login'
+    | '/_public/'
+    | '/_public/produto/$slug'
+    | '/admin/_authenticated/banners'
+    | '/admin/_authenticated/categorias'
+    | '/admin/_authenticated/configuracoes'
+    | '/admin/_authenticated/'
+    | '/admin/_authenticated/produtos/$id'
+    | '/admin/_authenticated/produtos/novo'
+    | '/admin/_authenticated/produtos/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  CarrinhoRoute: typeof CarrinhoRoute
-  ContatoRoute: typeof ContatoRoute
-  ProdutosRoute: typeof ProdutosRoute
-  SobreRoute: typeof SobreRoute
-  ProdutoSlugRoute: typeof ProdutoSlugRoute
+  PublicRoute: typeof PublicRouteWithChildren
+  AdminAuthenticatedRoute: typeof AdminAuthenticatedRouteWithChildren
+  AdminLoginRoute: typeof AdminLoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/sobre': {
-      id: '/sobre'
-      path: '/sobre'
-      fullPath: '/sobre'
-      preLoaderRoute: typeof SobreRouteImport
+    '/_public': {
+      id: '/_public'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produtos': {
-      id: '/produtos'
-      path: '/produtos'
-      fullPath: '/produtos'
-      preLoaderRoute: typeof ProdutosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contato': {
-      id: '/contato'
-      path: '/contato'
-      fullPath: '/contato'
-      preLoaderRoute: typeof ContatoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/carrinho': {
-      id: '/carrinho'
-      path: '/carrinho'
-      fullPath: '/carrinho'
-      preLoaderRoute: typeof CarrinhoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_public/': {
+      id: '/_public/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof PublicIndexRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produto/$slug': {
-      id: '/produto/$slug'
+    '/admin/_authenticated': {
+      id: '/admin/_authenticated'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_public/sobre': {
+      id: '/_public/sobre'
+      path: '/sobre'
+      fullPath: '/sobre'
+      preLoaderRoute: typeof PublicSobreRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/produtos': {
+      id: '/_public/produtos'
+      path: '/produtos'
+      fullPath: '/produtos'
+      preLoaderRoute: typeof PublicProdutosRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/contato': {
+      id: '/_public/contato'
+      path: '/contato'
+      fullPath: '/contato'
+      preLoaderRoute: typeof PublicContatoRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/_public/carrinho': {
+      id: '/_public/carrinho'
+      path: '/carrinho'
+      fullPath: '/carrinho'
+      preLoaderRoute: typeof PublicCarrinhoRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/admin/_authenticated/': {
+      id: '/admin/_authenticated/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminAuthenticatedIndexRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/admin/_authenticated/configuracoes': {
+      id: '/admin/_authenticated/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/admin/configuracoes'
+      preLoaderRoute: typeof AdminAuthenticatedConfiguracoesRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/admin/_authenticated/categorias': {
+      id: '/admin/_authenticated/categorias'
+      path: '/categorias'
+      fullPath: '/admin/categorias'
+      preLoaderRoute: typeof AdminAuthenticatedCategoriasRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/admin/_authenticated/banners': {
+      id: '/admin/_authenticated/banners'
+      path: '/banners'
+      fullPath: '/admin/banners'
+      preLoaderRoute: typeof AdminAuthenticatedBannersRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/_public/produto/$slug': {
+      id: '/_public/produto/$slug'
       path: '/produto/$slug'
       fullPath: '/produto/$slug'
-      preLoaderRoute: typeof ProdutoSlugRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof PublicProdutoSlugRouteImport
+      parentRoute: typeof PublicRoute
+    }
+    '/admin/_authenticated/produtos/': {
+      id: '/admin/_authenticated/produtos/'
+      path: '/produtos'
+      fullPath: '/admin/produtos/'
+      preLoaderRoute: typeof AdminAuthenticatedProdutosIndexRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/admin/_authenticated/produtos/novo': {
+      id: '/admin/_authenticated/produtos/novo'
+      path: '/produtos/novo'
+      fullPath: '/admin/produtos/novo'
+      preLoaderRoute: typeof AdminAuthenticatedProdutosNovoRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
+    }
+    '/admin/_authenticated/produtos/$id': {
+      id: '/admin/_authenticated/produtos/$id'
+      path: '/produtos/$id'
+      fullPath: '/admin/produtos/$id'
+      preLoaderRoute: typeof AdminAuthenticatedProdutosIdRouteImport
+      parentRoute: typeof AdminAuthenticatedRoute
     }
   }
 }
 
+interface PublicRouteChildren {
+  PublicCarrinhoRoute: typeof PublicCarrinhoRoute
+  PublicContatoRoute: typeof PublicContatoRoute
+  PublicProdutosRoute: typeof PublicProdutosRoute
+  PublicSobreRoute: typeof PublicSobreRoute
+  PublicIndexRoute: typeof PublicIndexRoute
+  PublicProdutoSlugRoute: typeof PublicProdutoSlugRoute
+}
+
+const PublicRouteChildren: PublicRouteChildren = {
+  PublicCarrinhoRoute: PublicCarrinhoRoute,
+  PublicContatoRoute: PublicContatoRoute,
+  PublicProdutosRoute: PublicProdutosRoute,
+  PublicSobreRoute: PublicSobreRoute,
+  PublicIndexRoute: PublicIndexRoute,
+  PublicProdutoSlugRoute: PublicProdutoSlugRoute,
+}
+
+const PublicRouteWithChildren =
+  PublicRoute._addFileChildren(PublicRouteChildren)
+
+interface AdminAuthenticatedRouteChildren {
+  AdminAuthenticatedBannersRoute: typeof AdminAuthenticatedBannersRoute
+  AdminAuthenticatedCategoriasRoute: typeof AdminAuthenticatedCategoriasRoute
+  AdminAuthenticatedConfiguracoesRoute: typeof AdminAuthenticatedConfiguracoesRoute
+  AdminAuthenticatedIndexRoute: typeof AdminAuthenticatedIndexRoute
+  AdminAuthenticatedProdutosIdRoute: typeof AdminAuthenticatedProdutosIdRoute
+  AdminAuthenticatedProdutosNovoRoute: typeof AdminAuthenticatedProdutosNovoRoute
+  AdminAuthenticatedProdutosIndexRoute: typeof AdminAuthenticatedProdutosIndexRoute
+}
+
+const AdminAuthenticatedRouteChildren: AdminAuthenticatedRouteChildren = {
+  AdminAuthenticatedBannersRoute: AdminAuthenticatedBannersRoute,
+  AdminAuthenticatedCategoriasRoute: AdminAuthenticatedCategoriasRoute,
+  AdminAuthenticatedConfiguracoesRoute: AdminAuthenticatedConfiguracoesRoute,
+  AdminAuthenticatedIndexRoute: AdminAuthenticatedIndexRoute,
+  AdminAuthenticatedProdutosIdRoute: AdminAuthenticatedProdutosIdRoute,
+  AdminAuthenticatedProdutosNovoRoute: AdminAuthenticatedProdutosNovoRoute,
+  AdminAuthenticatedProdutosIndexRoute: AdminAuthenticatedProdutosIndexRoute,
+}
+
+const AdminAuthenticatedRouteWithChildren =
+  AdminAuthenticatedRoute._addFileChildren(AdminAuthenticatedRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  CarrinhoRoute: CarrinhoRoute,
-  ContatoRoute: ContatoRoute,
-  ProdutosRoute: ProdutosRoute,
-  SobreRoute: SobreRoute,
-  ProdutoSlugRoute: ProdutoSlugRoute,
+  PublicRoute: PublicRouteWithChildren,
+  AdminAuthenticatedRoute: AdminAuthenticatedRouteWithChildren,
+  AdminLoginRoute: AdminLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

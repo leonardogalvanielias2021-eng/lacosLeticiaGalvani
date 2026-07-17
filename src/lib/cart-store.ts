@@ -105,10 +105,18 @@ export function formatBRL(value: number) {
   return value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+import { useQuery } from "@tanstack/react-query";
+import { SettingsService } from "@/services/settings.service";
+
 export function useWhatsAppLink() {
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => SettingsService.getSettings(),
+  });
+
   return useCallback((message: string) => {
-    const phone = "5511999990000"; // Placeholder — trocar pelo WhatsApp real
+    const phone = settings?.whatsapp_number || "5511999990000";
     const encoded = encodeURIComponent(message);
     return `https://wa.me/${phone}?text=${encoded}`;
-  }, []);
+  }, [settings?.whatsapp_number]);
 }

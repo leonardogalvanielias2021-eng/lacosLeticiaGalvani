@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import atelierImg from "@/assets/about-atelier.jpg";
 import heroImg from "@/assets/hero-girl-bow.jpg";
+import { useQuery } from "@tanstack/react-query";
+import { SettingsService } from "@/services/settings.service";
 
-export const Route = createFileRoute("/sobre")({
+export const Route = createFileRoute("/_public/sobre")({
   head: () => ({
     meta: [
       { title: "Sobre nós · Laços Letícia Galvani" },
@@ -19,6 +21,14 @@ export const Route = createFileRoute("/sobre")({
 });
 
 function AboutPage() {
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => SettingsService.getSettings(),
+  });
+
+  const aboutText = settings?.about_text || "Tudo começou em 2018 quando, na expectativa da minha primeira filha, comecei a criar peças exclusivas para ela. As amigas se apaixonaram, os pedidos vieram, e o ateliê nasceu como uma extensão desse afeto.\n\nHoje somos uma pequena equipe de mulheres artesãs que produzem cada peça com o mesmo carinho da primeira. Selecionamos pessoalmente cada fita, cada pérola, cada elástico, para garantir o conforto e a qualidade que nossas princesas merecem.\n\nMais de 5.000 pedidos entregues em todo o Brasil, e o mesmo compromisso: fazer com o coração.";
+  const aboutImage = settings?.about_image_url || atelierImg;
+
   return (
     <div>
       <section className="py-20 bg-rose-soft/40 border-b border-border">
@@ -39,30 +49,20 @@ function AboutPage() {
 
       <section className="container-page py-20 grid md:grid-cols-2 gap-16 items-center">
         <img
-          src={atelierImg}
+          src={aboutImage}
           alt="Letícia Galvani no ateliê"
           loading="lazy"
-          width={1000}
-          height={1250}
           className="rounded-3xl w-full aspect-[4/5] object-cover"
         />
         <div className="space-y-5">
           <h2 className="font-display italic text-4xl">Como tudo começou</h2>
-          <p className="text-sm text-foreground/70 leading-relaxed">
-            Tudo começou em 2018 quando, na expectativa da minha primeira filha, comecei a
-            criar peças exclusivas para ela. As amigas se apaixonaram, os pedidos vieram, e
-            o ateliê nasceu como uma extensão desse afeto.
-          </p>
-          <p className="text-sm text-foreground/70 leading-relaxed">
-            Hoje somos uma pequena equipe de mulheres artesãs que produzem cada peça com o
-            mesmo carinho da primeira. Selecionamos pessoalmente cada fita, cada pérola,
-            cada elástico, para garantir o conforto e a qualidade que nossas princesas
-            merecem.
-          </p>
-          <p className="text-sm text-foreground/70 leading-relaxed">
-            Mais de 5.000 pedidos entregues em todo o Brasil, e o mesmo compromisso: fazer
-            com o coração.
-          </p>
+          {aboutText.split('\n').map((paragraph, index) => (
+            paragraph.trim() ? (
+              <p key={index} className="text-sm text-foreground/70 leading-relaxed">
+                {paragraph}
+              </p>
+            ) : null
+          ))}
         </div>
       </section>
 

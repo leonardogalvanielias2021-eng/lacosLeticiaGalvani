@@ -2,7 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Mail, Phone, MessageCircle, MapPin, Clock } from "lucide-react";
 import { useWhatsAppLink } from "@/lib/cart-store";
 
-export const Route = createFileRoute("/contato")({
+import { SettingsService } from "@/services/settings.service";
+
+export const Route = createFileRoute("/_public/contato")({
+  loader: () => SettingsService.getSettings(),
   head: () => ({
     meta: [
       { title: "Contato & FAQ · Laços Letícia Galvani" },
@@ -45,6 +48,11 @@ const faqs = [
 
 function ContactPage() {
   const buildWA = useWhatsAppLink();
+  const settings = Route.useLoaderData();
+
+  const whatsappNumber = settings?.whatsapp_number || "5511999990000";
+  const email = settings?.contact_email || "contato@leticiagalvani.com.br";
+  const businessHours = settings?.business_hours || "Segunda a Sexta · 09h às 18h\nSábados · 09h às 13h";
 
   return (
     <div>
@@ -64,14 +72,14 @@ function ContactPage() {
           {
             icon: MessageCircle,
             title: "WhatsApp",
-            value: "(11) 99999-0000",
+            value: `+${whatsappNumber}`,
             href: buildWA("Olá! Vim pelo site."),
           },
           {
             icon: Mail,
             title: "E-mail",
-            value: "contato@leticiagalvani.com.br",
-            href: "mailto:contato@leticiagalvani.com.br",
+            value: email,
+            href: `mailto:${email}`,
           },
           {
             icon: Clock,
@@ -132,11 +140,22 @@ function ContactPage() {
           <div>
             <MapPin className="size-5 text-gold mb-4" strokeWidth={1.5} />
             <h3 className="font-display italic text-3xl mb-3">Nosso ateliê</h3>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              Rua das Fitas, 123 · Vila Delicada
-              <br />
-              São Paulo, SP · CEP 00000-000
-            </p>
+            {settings?.address ? (
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                {settings.address.split('\n').map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+              </p>
+            ) : (
+              <p className="text-sm text-foreground/70 leading-relaxed">
+                Rua das Fitas, 123 · Vila Delicada
+                <br />
+                São Paulo, SP · CEP 00000-000
+              </p>
+            )}
             <p className="text-xs text-foreground/50 mt-4">
               Visitas somente com agendamento prévio.
             </p>
@@ -145,8 +164,9 @@ function ContactPage() {
             <Phone className="size-5 text-gold mt-1" strokeWidth={1.5} />
             <div>
               <h3 className="font-display italic text-3xl mb-3">Atendimento</h3>
-              <p className="text-sm text-foreground/70">Segunda a Sexta · 09h às 18h</p>
-              <p className="text-sm text-foreground/70">Sábados · 09h às 13h</p>
+              {businessHours.split('\n').map((line, index) => (
+                <p key={index} className="text-sm text-foreground/70">{line}</p>
+              ))}
             </div>
           </div>
         </div>

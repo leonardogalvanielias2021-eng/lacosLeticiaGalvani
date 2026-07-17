@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Sparkles, Heart, Truck, MessageSquareHeart, Star, ChevronRight } from "lucide-react";
-import { PRODUCTS, CATEGORIES } from "@/lib/products";
 import { ProductCard } from "@/components/site/ProductCard";
 import atelierImg from "@/assets/about-atelier.jpg";
 import g1 from "@/assets/gallery-1.jpg";
@@ -8,7 +7,19 @@ import g2 from "@/assets/gallery-2.jpg";
 import g3 from "@/assets/gallery-3.jpg";
 import g4 from "@/assets/gallery-4.jpg";
 
-export const Route = createFileRoute("/")({
+import { getAllProducts } from "@/lib/products";
+import { CategoriesService } from "@/services/categories.service";
+import { SettingsService } from "@/services/settings.service";
+
+export const Route = createFileRoute("/_public/")({
+  loader: async () => {
+    const [products, categories, settings] = await Promise.all([
+      getAllProducts(),
+      CategoriesService.getAll(),
+      SettingsService.getSettings()
+    ]);
+    return { products, categories, settings };
+  },
   head: () => ({
     meta: [
       { title: "Laços Letícia Galvani · Ateliê de Laços Artesanais" },
@@ -48,7 +59,12 @@ const testimonials = [
 ];
 
 function HomePage() {
-  const featured = PRODUCTS.slice(0, 4);
+  const { products, categories, settings } = Route.useLoaderData();
+  const featured = products.slice(0, 4);
+
+  const aboutText = settings?.about_text || "A Laços Letícia Galvani nasceu do desejo de transformar fitas e tecidos em memórias afetivas. Cada peça é confeccionada manualmente em nosso ateliê, utilizando apenas os melhores materiais para garantir conforto e beleza para quem você mais ama.\n\nSão mais de 5.000 pedidos entregues, cada um com o mesmo carinho da primeira peça.";
+  const aboutImage = settings?.about_image_url || atelierImg;
+  const whatsappNumber = settings?.whatsapp_number || "5511999990000";
 
   return (
     <div>
@@ -142,14 +158,14 @@ function HomePage() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {CATEGORIES.slice(0, 4).map((cat) => {
-              const product = PRODUCTS.find((p) => p.category === cat.slug);
+            {categories.slice(0, 4).map((cat) => {
+              const product = products.find((p) => p.category === cat.name);
               if (!product) return null;
               return (
                 <Link
-                  key={cat.slug}
+                  key={cat.id}
                   to="/produtos"
-                  search={{ cat: cat.slug }}
+                  search={{ cat: cat.name }}
                   className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-sand"
                 >
                   <img
@@ -207,10 +223,8 @@ function HomePage() {
           <div className="relative">
             <div className="absolute -top-4 -left-4 w-full h-full border border-gold rounded-3xl" />
             <img
-              src={atelierImg}
+              src={aboutImage}
               alt="Ateliê Letícia Galvani"
-              width={1000}
-              height={1250}
               loading="lazy"
               className="relative w-full aspect-[4/5] object-cover rounded-3xl"
             />
@@ -222,16 +236,13 @@ function HomePage() {
             <h2 className="font-display italic text-4xl md:text-5xl leading-tight">
               Feito à mão, de coração para coração.
             </h2>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              A Laços Letícia Galvani nasceu do desejo de transformar fitas e tecidos em
-              memórias afetivas. Cada peça é confeccionada manualmente em nosso ateliê,
-              utilizando apenas os melhores materiais para garantir conforto e beleza para
-              quem você mais ama.
-            </p>
-            <p className="text-sm text-foreground/70 leading-relaxed">
-              São mais de 5.000 pedidos entregues, cada um com o mesmo carinho da primeira
-              peça.
-            </p>
+            {aboutText.split('\n').map((paragraph, index) => (
+              paragraph.trim() ? (
+                <p key={index} className="text-sm text-foreground/70 leading-relaxed">
+                  {paragraph}
+                </p>
+              ) : null
+            ))}
             <Link
               to="/sobre"
               className="inline-block border-b border-foreground pb-2 text-[11px] uppercase tracking-[0.2em] font-medium hover:text-gold hover:border-gold transition-all"
@@ -316,7 +327,7 @@ function HomePage() {
             Fale conosco pelo WhatsApp e criamos junto.
           </p>
           <a
-            href="https://wa.me/5511999990000"
+            href={`https://wa.me/${whatsappNumber}`}
             target="_blank"
             rel="noreferrer"
             className="inline-flex mt-8 items-center gap-2 bg-gold hover:bg-rose-deep hover:text-foreground text-white px-8 py-4 rounded-full text-[11px] uppercase tracking-[0.2em] font-medium transition-all"

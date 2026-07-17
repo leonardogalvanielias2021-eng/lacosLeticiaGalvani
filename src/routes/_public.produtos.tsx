@@ -2,26 +2,24 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { z } from "zod";
 import { Search } from "lucide-react";
-import { PRODUCTS, CATEGORIES, type Category } from "@/lib/products";
+import { getAllProducts, type Product } from "@/lib/products";
+import { CategoriesService } from "@/services/categories.service";
 import { ProductCard } from "@/components/site/ProductCard";
 
 const searchSchema = z.object({
-  cat: z
-    .enum([
-      "lacos-boutique",
-      "lacos-escolares",
-      "faixas-bebe",
-      "tiaras",
-      "kits",
-      "promocoes",
-      "lancamentos",
-    ])
-    .optional(),
+  cat: z.string().optional(),
   q: z.string().optional(),
 });
 
-export const Route = createFileRoute("/produtos")({
+export const Route = createFileRoute("/_public/produtos")({
   validateSearch: searchSchema,
+  loader: async () => {
+    const [products, categories] = await Promise.all([
+      getAllProducts(),
+      CategoriesService.getAll()
+    ]);
+    return { products, categories };
+  },
   head: () => ({
     meta: [
       { title: "Coleção · Laços Letícia Galvani" },
@@ -38,14 +36,15 @@ export const Route = createFileRoute("/produtos")({
 type SortKey = "relevant" | "price-asc" | "price-desc" | "new" | "bestseller";
 
 function ProductsPage() {
+  const { products, categories } = Route.useLoaderData();
   const search = Route.useSearch();
-  const [category, setCategory] = useState<Category | "todos">(search.cat ?? "todos");
+  const [category, setCategory] = useState<string | "todos">(search.cat ?? "todos");
   const [query, setQuery] = useState(search.q ?? "");
   const [sort, setSort] = useState<SortKey>("relevant");
   const [maxPrice, setMaxPrice] = useState(150);
 
   const filtered = useMemo(() => {
-    let items = [...PRODUCTS];
+    let items = [...products];
     if (category !== "todos") {
       if (category === "lancamentos") items = items.filter((p) => p.isNew);
       else if (category === "promocoes") items = items.filter((p) => p.oldPrice);
@@ -126,12 +125,12 @@ function ProductsPage() {
                   Todos
                 </button>
               </li>
-              {CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <li key={c.slug}>
                   <button
-                    onClick={() => setCategory(c.slug)}
+                    onClick={() => setCategory(c.name)}
                     className={`transition-colors ${
-                      category === c.slug ? "text-gold font-medium" : "text-foreground/70 hover:text-foreground"
+                      category === c.name ? "text-gold font-medium" : "text-foreground/70 hover:text-foreground"
                     }`}
                   >
                     {c.name}

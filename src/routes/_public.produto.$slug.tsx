@@ -6,11 +6,12 @@ import { getProductBySlug, getRelatedProducts } from "@/lib/products";
 import { addToCart, formatBRL, useWhatsAppLink } from "@/lib/cart-store";
 import { ProductCard } from "@/components/site/ProductCard";
 
-export const Route = createFileRoute("/produto/$slug")({
-  loader: ({ params }) => {
-    const product = getProductBySlug(params.slug);
+export const Route = createFileRoute("/_public/produto/$slug")({
+  loader: async ({ params }) => {
+    const product = await getProductBySlug(params.slug);
     if (!product) throw notFound();
-    return { product };
+    const related = await getRelatedProducts(product);
+    return { product, related };
   },
   head: ({ loaderData }) => ({
     meta: [
@@ -32,12 +33,11 @@ export const Route = createFileRoute("/produto/$slug")({
 });
 
 function ProductPage() {
-  const { product } = Route.useLoaderData();
-  const [selectedImage, setSelectedImage] = useState(0);
+  const { product, related } = Route.useLoaderData();
+  const [mainImage, setMainImage] = useState(product.gallery[0]);
   const [color, setColor] = useState(product.colors[0]?.name);
   const [qty, setQty] = useState(1);
   const buildWA = useWhatsAppLink();
-  const related = getRelatedProducts(product);
 
   const handleAdd = () => {
     addToCart(product, { quantity: qty, color });
@@ -65,7 +65,7 @@ function ProductPage() {
         <div className="space-y-4">
           <div className="aspect-square rounded-3xl overflow-hidden bg-sand group">
             <img
-              src={product.gallery[selectedImage]}
+              src={mainImage}
               alt={product.name}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
@@ -75,9 +75,9 @@ function ProductPage() {
               {product.gallery.map((src: string, i: number) => (
                 <button
                   key={i}
-                  onClick={() => setSelectedImage(i)}
+                  onClick={() => setMainImage(src)}
                   className={`aspect-square rounded-xl overflow-hidden bg-sand border-2 transition-all ${
-                    selectedImage === i ? "border-gold" : "border-transparent"
+                    mainImage === src ? "border-gold" : "border-transparent"
                   }`}
                 >
                   <img src={src} alt="" className="w-full h-full object-cover" />
@@ -134,10 +134,13 @@ function ProductPage() {
               Cor: <span className="text-foreground/60 font-normal">{color}</span>
             </h4>
             <div className="flex gap-3">
-              {product.colors.map((c: { name: string; hex: string }) => (
+              {product.colors.map((c: { name: string; hex: string; image?: string }) => (
                 <button
                   key={c.name}
-                  onClick={() => setColor(c.name)}
+                  onClick={() => {
+                    setColor(c.name);
+                    if (c.image) setMainImage(c.image);
+                  }}
                   aria-label={c.name}
                   className={`size-10 rounded-full border-2 transition-all ${
                     color === c.name ? "border-gold scale-110" : "border-border"

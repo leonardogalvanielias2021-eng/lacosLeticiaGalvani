@@ -1,13 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { Instagram, Facebook, Mail, Phone } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { SettingsService } from "@/services/settings.service";
 
 export function Footer() {
+  const { data: settings } = useQuery({
+    queryKey: ["settings"],
+    queryFn: () => SettingsService.getSettings(),
+  });
+
   return (
     <footer className="bg-white pt-20 pb-12 border-t border-rose-soft mt-24">
       <div className="container-page grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
         <div className="space-y-4">
           <div>
-            <div className="font-display text-2xl italic">Letícia Galvani</div>
+            <div className="font-display text-2xl italic">{settings?.store_name || "Letícia Galvani"}</div>
             <div className="text-[9px] uppercase tracking-[0.35em] text-gold mt-1">
               Ateliê de Laços
             </div>
@@ -18,7 +25,7 @@ export function Footer() {
           </p>
           <div className="flex gap-3 pt-2">
             <a
-              href="https://instagram.com"
+              href={settings?.instagram_url || "https://instagram.com"}
               className="size-9 rounded-full border border-rose-deep grid place-items-center hover:bg-rose-deep hover:text-white transition-all"
             >
               <Instagram className="size-4" />
@@ -62,10 +69,10 @@ export function Footer() {
           </h5>
           <ul className="space-y-3 text-sm font-light text-foreground/70">
             <li className="flex items-center gap-2">
-              <Mail className="size-3.5 text-gold" /> contato@leticiagalvani.com.br
+              <Mail className="size-3.5 text-gold" /> {settings?.contact_email || "contato@leticiagalvani.com.br"}
             </li>
             <li className="flex items-center gap-2">
-              <Phone className="size-3.5 text-gold" /> (11) 99999-0000
+              <Phone className="size-3.5 text-gold" /> {settings?.whatsapp_number || "(11) 99999-0000"}
             </li>
             <li className="text-xs text-foreground/50 pt-2">Seg a Sex · 09h às 18h</li>
           </ul>
@@ -74,7 +81,14 @@ export function Footer() {
 
       <div className="container-page pt-8 border-t border-rose-soft flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-foreground/40">
         <p>© 2026 Laços Letícia Galvani · Todos os direitos reservados</p>
-        <p>Feito à mão, com afeto — no Brasil</p>
+        <p className="text-right">
+          {settings?.address?.split('\n').map((line, index, arr) => (
+            <span key={index}>
+              {line}
+              {index < arr.length - 1 && " · "}
+            </span>
+          )) || "Feito à mão, com afeto — no Brasil"}
+        </p>
       </div>
     </footer>
   );
