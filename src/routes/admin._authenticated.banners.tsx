@@ -89,8 +89,8 @@ function AdminBanners() {
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-display text-foreground">Banners</h2>
-          <p className="text-muted-foreground mt-1">Gerencie os banners da página inicial.</p>
+          <h2 className="text-3xl font-display text-foreground">Galeria (Fotos)</h2>
+          <p className="text-muted-foreground mt-1">Gerencie as fotos da seção "Nossas Princesas" na página inicial.</p>
         </div>
 
         <Dialog open={isCreateOpen} onOpenChange={(open) => {

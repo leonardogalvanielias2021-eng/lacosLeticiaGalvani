@@ -10,15 +10,24 @@ import g4 from "@/assets/gallery-4.jpg";
 import { getAllProducts } from "@/lib/products";
 import { CategoriesService } from "@/services/categories.service";
 import { SettingsService } from "@/services/settings.service";
+import { BannersService } from "@/services/banners.service";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export const Route = createFileRoute("/_public/")({
   loader: async () => {
-    const [products, categories, settings] = await Promise.all([
+    const [products, categories, settings, banners] = await Promise.all([
       getAllProducts(),
       CategoriesService.getAll(),
-      SettingsService.getSettings()
+      SettingsService.getSettings(),
+      BannersService.getAll(true)
     ]);
-    return { products, categories, settings };
+    return { products, categories, settings, banners };
   },
   head: () => ({
     meta: [
@@ -59,7 +68,7 @@ const testimonials = [
 ];
 
 function HomePage() {
-  const { products, categories, settings } = Route.useLoaderData();
+  const { products, categories, settings, banners } = Route.useLoaderData();
   const featured = products.slice(0, 4);
 
   const aboutText = settings?.about_text || "A Laços Letícia Galvani nasceu do desejo de transformar fitas e tecidos em memórias afetivas. Cada peça é confeccionada manualmente em nosso ateliê, utilizando apenas os melhores materiais para garantir conforto e beleza para quem você mais ama.\n\nSão mais de 5.000 pedidos entregues, cada um com o mesmo carinho da primeira peça.";
@@ -301,18 +310,58 @@ function HomePage() {
               #LacosLeticiaGalvani
             </h2>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {[g1, g2, g3, g4].map((src, i) => (
-              <div key={i} className="aspect-[4/5] overflow-hidden rounded-2xl bg-sand">
-                <img
-                  src={src}
-                  alt={`Cliente ${i + 1}`}
-                  loading="lazy"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
-                />
-              </div>
-            ))}
-          </div>
+          <Carousel
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+            className="w-full relative"
+          >
+            <CarouselContent className="-ml-3">
+              {banners && banners.length > 0 ? (
+                banners.map((banner, i) => (
+                  <CarouselItem key={banner.id} className="pl-3 basis-1/2 md:basis-1/4">
+                    <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-sand relative group">
+                      {banner.link_url ? (
+                        <a href={banner.link_url} target="_blank" rel="noreferrer" className="block w-full h-full">
+                          <img
+                            src={banner.image_url}
+                            alt={banner.title || `Cliente ${i + 1}`}
+                            loading="lazy"
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                          />
+                        </a>
+                      ) : (
+                        <img
+                          src={banner.image_url}
+                          alt={banner.title || `Cliente ${i + 1}`}
+                          loading="lazy"
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                        />
+                      )}
+                    </div>
+                  </CarouselItem>
+                ))
+              ) : (
+                [g1, g2, g3, g4].map((src, i) => (
+                  <CarouselItem key={i} className="pl-3 basis-1/2 md:basis-1/4">
+                    <div className="aspect-[4/5] overflow-hidden rounded-2xl bg-sand">
+                      <img
+                        src={src}
+                        alt={`Cliente ${i + 1}`}
+                        loading="lazy"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))
+              )}
+            </CarouselContent>
+            <div className="hidden md:block">
+              <CarouselPrevious className="-left-4 lg:-left-12 bg-white text-foreground hover:bg-gold hover:text-white border-none shadow-soft" />
+              <CarouselNext className="-right-4 lg:-right-12 bg-white text-foreground hover:bg-gold hover:text-white border-none shadow-soft" />
+            </div>
+          </Carousel>
         </div>
       </section>
 

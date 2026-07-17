@@ -32,7 +32,7 @@ function AdminLayout() {
               <Tag className="size-4" /> Categorias
             </Link>
             <Link to="/admin/banners" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground/70 hover:bg-rose-soft/50 hover:text-foreground [&.active]:bg-rose-soft [&.active]:text-foreground transition-colors" activeProps={{ className: "bg-rose-soft text-foreground font-semibold" }}>
-              <ImageIcon className="size-4" /> Banners
+              <ImageIcon className="size-4" /> Galeria (Fotos)
             </Link>
             <Link to="/admin/configuracoes" className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground/70 hover:bg-rose-soft/50 hover:text-foreground [&.active]:bg-rose-soft [&.active]:text-foreground transition-colors" activeProps={{ className: "bg-rose-soft text-foreground font-semibold" }}>
               <Settings className="size-4" /> Configurações
