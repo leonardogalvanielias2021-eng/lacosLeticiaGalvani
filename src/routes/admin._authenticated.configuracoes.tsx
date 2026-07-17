@@ -5,6 +5,7 @@ import { SettingsService } from "@/services/settings.service";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Loader2, Save } from "lucide-react";
 import type { Database } from "@/types/database.types";
 
@@ -100,104 +101,112 @@ function AdminConfiguracoes() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Nome da Loja *</label>
-                <Input 
-                  value={formData.store_name} 
-                  onChange={(e) => setFormData({ ...formData, store_name: e.target.value })}
-                  placeholder="Ex: Laços Letícia Galvani" 
-                  className="rounded-xl"
-                  required
-                />
-              </div>
+            <Tabs defaultValue="geral" className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-8 bg-sand/50 p-1 rounded-xl">
+                <TabsTrigger value="geral" className="rounded-lg text-sm font-semibold">Geral</TabsTrigger>
+                <TabsTrigger value="contato" className="rounded-lg text-sm font-semibold">Contato e Local</TabsTrigger>
+                <TabsTrigger value="sobre" className="rounded-lg text-sm font-semibold">Sobre Nós</TabsTrigger>
+              </TabsList>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">WhatsApp de Contato</label>
-                <Input 
-                  value={formData.whatsapp_number} 
-                  onChange={(e) => setFormData({ ...formData, whatsapp_number: e.target.value })}
-                  placeholder="Ex: 5511999999999" 
-                  className="rounded-xl"
-                />
-                <p className="text-[11px] text-muted-foreground">Use apenas números, incluindo o código do país (ex: 55).</p>
-              </div>
+              <TabsContent value="geral" className="space-y-4 animate-fade-in">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Nome da Loja *</label>
+                  <Input 
+                    value={formData.store_name} 
+                    onChange={(e) => setFormData({ ...formData, store_name: e.target.value })}
+                    placeholder="Ex: Laços Letícia Galvani" 
+                    className="rounded-xl"
+                    required
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">E-mail de Contato</label>
-                <Input 
-                  type="email"
-                  value={formData.contact_email} 
-                  onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
-                  placeholder="contato@loja.com.br" 
-                  className="rounded-xl"
-                />
-              </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Texto do Banner de Topo (Frete)</label>
+                  <Input 
+                    value={formData.top_banner_text || ""} 
+                    onChange={(e) => setFormData({ ...formData, top_banner_text: e.target.value })}
+                    placeholder="Frete grátis em compras acima de R$ 250" 
+                    className="rounded-xl"
+                  />
+                </div>
+              </TabsContent>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Horário de Funcionamento</label>
-                <textarea 
-                  value={formData.business_hours || ""} 
-                  onChange={(e) => setFormData({ ...formData, business_hours: e.target.value })}
-                  placeholder="Segunda a Sexta · 09h às 18h&#10;Sábados · 09h às 13h" 
-                  className="flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
+              <TabsContent value="contato" className="space-y-4 animate-fade-in">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">WhatsApp de Contato</label>
+                  <Input 
+                    value={formData.whatsapp_number} 
+                    onChange={(e) => setFormData({ ...formData, whatsapp_number: e.target.value })}
+                    placeholder="Ex: 5511999999999" 
+                    className="rounded-xl"
+                  />
+                  <p className="text-[11px] text-muted-foreground">Use apenas números, incluindo o código do país (ex: 55).</p>
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Endereço da Loja</label>
-                <textarea 
-                  value={formData.address || ""} 
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  placeholder="Rua das Fitas, 123 · Vila Delicada&#10;São Paulo, SP · CEP 00000-000" 
-                  className="flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">E-mail de Contato</label>
+                  <Input 
+                    type="email"
+                    value={formData.contact_email} 
+                    onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                    placeholder="contato@loja.com.br" 
+                    className="rounded-xl"
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">URL do Instagram</label>
-                <Input 
-                  value={formData.instagram_url} 
-                  onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
-                  placeholder="https://instagram.com/seuperfil" 
-                  className="rounded-xl"
-                />
-              </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">URL do Instagram</label>
+                  <Input 
+                    value={formData.instagram_url} 
+                    onChange={(e) => setFormData({ ...formData, instagram_url: e.target.value })}
+                    placeholder="https://instagram.com/seuperfil" 
+                    className="rounded-xl"
+                  />
+                </div>
 
-              <div className="pt-4 border-t border-border">
-                <h3 className="font-display text-xl mb-4">Personalização da Loja</h3>
-              </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Horário de Funcionamento</label>
+                  <textarea 
+                    value={formData.business_hours || ""} 
+                    onChange={(e) => setFormData({ ...formData, business_hours: e.target.value })}
+                    placeholder="Segunda a Sexta · 09h às 18h&#10;Sábados · 09h às 13h" 
+                    className="flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Texto do Banner de Topo (Frete)</label>
-                <Input 
-                  value={formData.top_banner_text || ""} 
-                  onChange={(e) => setFormData({ ...formData, top_banner_text: e.target.value })}
-                  placeholder="Frete grátis em compras acima de R$ 250" 
-                  className="rounded-xl"
-                />
-              </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Endereço da Loja</label>
+                  <textarea 
+                    value={formData.address || ""} 
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    placeholder="Rua das Fitas, 123 · Vila Delicada&#10;São Paulo, SP · CEP 00000-000" 
+                    className="flex min-h-[80px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
+              </TabsContent>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Nossa História (Texto)</label>
-                <textarea 
-                  value={formData.about_text || ""} 
-                  onChange={(e) => setFormData({ ...formData, about_text: e.target.value })}
-                  placeholder="Conte um pouco sobre como a loja começou..." 
-                  className="flex min-h-[120px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
+              <TabsContent value="sobre" className="space-y-4 animate-fade-in">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Nossa História (Texto)</label>
+                  <textarea 
+                    value={formData.about_text || ""} 
+                    onChange={(e) => setFormData({ ...formData, about_text: e.target.value })}
+                    placeholder="Conte um pouco sobre como a loja começou..." 
+                    className="flex min-h-[160px] w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  />
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs uppercase tracking-widest text-muted-foreground">Nossa História (URL da Foto)</label>
-                <Input 
-                  value={formData.about_image_url || ""} 
-                  onChange={(e) => setFormData({ ...formData, about_image_url: e.target.value })}
-                  placeholder="https://sua-imagem.com/foto.jpg" 
-                  className="rounded-xl"
-                />
-              </div>
-            </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Nossa História (URL da Foto)</label>
+                  <Input 
+                    value={formData.about_image_url || ""} 
+                    onChange={(e) => setFormData({ ...formData, about_image_url: e.target.value })}
+                    placeholder="https://sua-imagem.com/foto.jpg" 
+                    className="rounded-xl"
+                  />
+                </div>
+              </TabsContent>
+            </Tabs>
 
             <div className="pt-4 flex justify-end">
               <Button 
