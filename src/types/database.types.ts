@@ -77,6 +77,7 @@ export interface Database {
           is_new: boolean
           is_bestseller: boolean
           is_active: boolean
+          image: string | null
           created_at: string
           updated_at: string
           deleted_at: string | null
@@ -99,6 +100,7 @@ export interface Database {
           is_new?: boolean
           is_bestseller?: boolean
           is_active?: boolean
+          image?: string | null
           created_at?: string
           updated_at?: string
           deleted_at?: string | null
@@ -121,6 +123,7 @@ export interface Database {
           is_new?: boolean
           is_bestseller?: boolean
           is_active?: boolean
+          image?: string | null
           created_at?: string
           updated_at?: string
           deleted_at?: string | null

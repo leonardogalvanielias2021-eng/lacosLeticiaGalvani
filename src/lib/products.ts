@@ -39,7 +39,7 @@ async function fetchProductsFromDb() {
 
   return data.map((p: any): Product => {
     const gallery = p.produto_fotos?.map((f: any) => f.url) || [];
-    const image = gallery.length > 0 ? gallery[0] : "https://placehold.co/600x800?text=Sem+Foto";
+    const image = p.image || (gallery.length > 0 ? gallery[0] : "https://placehold.co/600x800?text=Sem+Foto");
     
     return {
       id: p.id,
