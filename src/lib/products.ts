@@ -30,7 +30,7 @@ export const CATEGORIES: { slug: string; name: string }[] = [];
 async function fetchProductsFromDb() {
   const { data } = await supabase
     .from("produtos")
-    .select("*, categorias(name), produto_fotos(url), produto_variacoes(*)")
+    .select("*, categorias(name), produto_fotos(image_url), produto_variacoes(*)")
     .is("deleted_at", null)
     .eq("is_active", true)
     .order("created_at", { ascending: false });
@@ -38,7 +38,7 @@ async function fetchProductsFromDb() {
   if (!data) return [];
 
   return data.map((p: any): Product => {
-    const gallery = p.produto_fotos?.map((f: any) => f.url) || [];
+    const gallery = p.produto_fotos?.map((f: any) => f.image_url) || [];
     const image = p.image || (gallery.length > 0 ? gallery[0] : "https://placehold.co/600x800?text=Sem+Foto");
     
     return {
